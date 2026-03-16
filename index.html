@@ -1,256 +1,351 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Keluhan · Futuristik Merah Hitam</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Efek futuristik: garis berjalan (scanline) dan glow */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(255, 0, 0, 0.03) 0px, rgba(0,0,0,0.5) 1px, transparent 2px);
-            pointer-events: none;
-            z-index: 999;
-        }
-        .glow-text {
-            text-shadow: 0 0 5px #ff0000, 0 0 15px #ff0000;
-        }
-        .glow-border {
-            box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000 inset;
-        }
-        .field-transition {
-            transition: all 0.3s ease;
-        }
-        /* Kustom scrollbar */
-        textarea::-webkit-scrollbar {
-            width: 8px;
-        }
-        textarea::-webkit-scrollbar-track {
-            background: #1a0000;
-        }
-        textarea::-webkit-scrollbar-thumb {
-            background: #ff0000;
-            border-radius: 8px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Laporan Keluhan · Red Theme</title>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Choices.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+  <!-- BoxIcon CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      display: flex; justify-content: center; align-items: center;
+      background: url('https://files.catbox.moe/javj0s.jpg') no-repeat center center/cover;
+      color: white;
+    }
+    body.swal2-shown { overflow: hidden !important; padding-right: 0px !important; }
+    .container {
+      background: rgba(0, 0, 0, 0.85); padding: 25px; border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.6);
+      width: 90%; max-width: 450px; text-align: center; border: 1px solid #ff0000;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .avatar {
+      width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ff0000;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+      position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+      background: black;
+      object-fit: cover;
+    }
+    h2 { margin-top: 45px; color: #ff0000; margin-bottom: 20px; }
+    input, select, textarea {
+      width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #ff0000;
+      background: black; color: white; border-radius: 5px; font-size: 16px; outline: none;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    /* Styling untuk Choices.js agar sesuai tema */
+    .choices { margin: 8px 0; }
+    .choices__inner {
+      background: black; color: white; border: 2px solid #ff0000;
+      border-radius: 5px; font-size: 16px; min-height: 45px;
+    }
+    .choices__list--dropdown, .choices__list[aria-expanded] {
+      background-color: black !important; border: 2px solid #ff0000 !important; color: white !important;
+    }
+    .choices__item--selectable { background-color: black !important; color: white !important; }
+    .choices__item--selectable.is-highlighted { background-color: #d40000 !important; color: white !important; }
+    .choices__placeholder { opacity: 0.7; }
+    button {
+      background: #ff0000; color: white; border: none; padding: 12px 15px;
+      width: 100%; border-radius: 5px; font-size: 18px; cursor: pointer;
+      transition: 0.3s; font-weight: bold; text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+      margin-top: 15px;
+    }
+    button:hover { background: #d40000; box-shadow: 0 0 15px rgba(255, 0, 0, 1); }
+    
+    /* Social icons */
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 25px;
+      padding: 15px 0 5px;
+    }
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border: 1px solid rgba(255, 0, 0, 0.5);
+    }
+    .social-icon:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+    }
+    .social-icon.whatsapp:hover {
+      background: #25D366;
+      color: white;
+      border-color: #25D366;
+    }
+    .social-icon.github:hover {
+      background: #333;
+      color: white;
+      border-color: #333;
+    }
+    .social-icon.instagram:hover {
+      background: #E1306C;
+      color: white;
+      border-color: #E1306C;
+    }
+    .copyright {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #ccc;
+      text-align: center;
+    }
+    /* Sembunyikan field grup */
+    .hidden {
+      display: none;
+    }
+    .field-group {
+      transition: all 0.3s ease;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-[#0a0000] via-[#1a0000] to-[#2a0000] min-h-screen flex items-center justify-center p-4 font-mono">
+<body>
+  <div class="container">
+    <!-- Avatar -->
+    <img class="avatar" src="https://files.catbox.moe/5izf6o.jpeg" alt="Avatar Bot" />
+    <h2>Laporan Keluhan</h2>
 
-    <div class="bg-black/80 backdrop-blur-md rounded-3xl shadow-2xl shadow-red-600/50 w-full max-w-2xl p-6 md:p-8 border border-red-600/50 relative overflow-hidden">
-        <!-- Efek garis merah berjalan di pinggir -->
-        <div class="absolute -inset-1 bg-gradient-to-r from-red-600 via-red-400 to-red-600 blur-2xl opacity-20 animate-pulse"></div>
-        
-        <!-- Header -->
-        <div class="text-center mb-8 relative z-10">
-            <div class="inline-block p-3 bg-black border-2 border-red-600 rounded-full mb-3 shadow-[0_0_20px_red]">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-            </div>
-            <h1 class="text-4xl font-bold text-white glow-text tracking-widest">LAPORAN KELUHAN</h1>
-            <p class="text-red-400/80 mt-1 text-sm uppercase tracking-wider">Pilih produk & sampaikan kendala</p>
+    <!-- Formulir -->
+    <form id="complaintForm">
+      <!-- Dropdown Produk (akan diinisialisasi dengan Choices.js) -->
+      <select id="product" name="product" placeholder="Pilih Produk">
+        <option value="" disabled selected>-- Pilih Produk --</option>
+        <option value="clonebot">CloneBot</option>
+        <option value="sewabot">SewaBot</option>
+        <option value="lainnya">Lainnya</option>
+      </select>
+
+      <!-- Container Field Dinamis -->
+      <div id="dynamic-fields">
+        <!-- CloneBot Fields -->
+        <div id="clonebot-fields" class="field-group hidden">
+          <input type="text" id="botNumber" name="botNumber" placeholder="Nomor Bot Bermasalah (contoh: 628123456789)" />
+          <select id="server" name="server">
+            <option value="1">Server 1</option>
+            <option value="2">Server 2</option>
+            <option value="3">Server 3</option>
+            <option value="4">Server 4</option>
+          </select>
+          <textarea id="complaintClone" rows="3" placeholder="Tulis keluhan Anda dengan detail..."></textarea>
         </div>
 
-        <form id="complaintForm" class="space-y-5 relative z-10">
-            <!-- Dropdown Produk dengan placeholder -->
-            <div class="relative">
-                <label class="block text-sm font-semibold text-red-400 mb-1 uppercase tracking-wider">Produk</label>
-                <select id="product" name="product" class="w-full bg-black border-2 border-red-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition appearance-none shadow-[0_0_10px_red]">
-                    <option value="" disabled selected class="bg-black text-gray-500">-- Pilih Produk --</option>
-                    <option value="clonebot" class="bg-black">CloneBot</option>
-                    <option value="sewabot" class="bg-black">SewaBot</option>
-                    <option value="lainnya" class="bg-black">Lainnya</option>
-                </select>
-                <div class="pointer-events-none absolute right-3 top-10 text-red-600">
-                    ▼
-                </div>
-            </div>
+        <!-- SewaBot Fields -->
+        <div id="sewabot-fields" class="field-group hidden">
+          <input type="url" id="groupLink" name="groupLink" placeholder="Link Group (https://t.me/...)" />
+          <textarea id="complaintSewa" rows="3" placeholder="Tulis keluhan Anda dengan detail..."></textarea>
+        </div>
 
-            <!-- Container Field Dinamis -->
-            <div id="dynamic-fields" class="space-y-4">
-                <!-- Fields untuk CloneBot (awalnya tersembunyi) -->
-                <div id="clonebot-fields" class="space-y-4 hidden field-transition">
-                    <div>
-                        <label class="block text-sm font-semibold text-red-400 mb-1 uppercase tracking-wider">Nomor Bot</label>
-                        <input type="text" id="botNumber" name="botNumber" placeholder="628123456789" class="w-full bg-black border-2 border-red-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition placeholder:text-red-800 shadow-[0_0_5px_red]">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-red-400 mb-1 uppercase tracking-wider">Server</label>
-                        <select id="server" name="server" class="w-full bg-black border-2 border-red-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition shadow-[0_0_5px_red]">
-                            <option value="1" class="bg-black">Server 1</option>
-                            <option value="2" class="bg-black">Server 2</option>
-                            <option value="3" class="bg-black">Server 3</option>
-                            <option value="4" class="bg-black">Server 4</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-red-400 mb-1 uppercase tracking-wider">Keluhan</label>
-                        <textarea id="complaintClone" rows="4" placeholder="Tulis detail keluhan..." class="w-full bg-black border-2 border-red-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition resize-none placeholder:text-red-800 shadow-[0_0_5px_red]"></textarea>
-                    </div>
-                </div>
+        <!-- Lainnya Fields -->
+        <div id="lainnya-fields" class="field-group hidden">
+          <textarea id="complaintLainnya" rows="4" placeholder="Tulis keluhan atau pesan Anda..."></textarea>
+        </div>
+      </div>
 
-                <!-- Fields untuk SewaBot -->
-                <div id="sewabot-fields" class="space-y-4 hidden field-transition">
-                    <div>
-                        <label class="block text-sm font-semibold text-red-400 mb-1 uppercase tracking-wider">Link Group</label>
-                        <input type="url" id="groupLink" name="groupLink" placeholder="https://t.me/..." class="w-full bg-black border-2 border-red-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition placeholder:text-red-800 shadow-[0_0_5px_red]">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-red-400 mb-1 uppercase tracking-wider">Keluhan</label>
-                        <textarea id="complaintSewa" rows="4" placeholder="Tulis detail keluhan..." class="w-full bg-black border-2 border-red-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition resize-none placeholder:text-red-800 shadow-[0_0_5px_red]"></textarea>
-                    </div>
-                </div>
+      <button type="submit">Kirim Laporan via WhatsApp</button>
+    </form>
 
-                <!-- Fields untuk Lainnya -->
-                <div id="lainnya-fields" class="space-y-4 hidden field-transition">
-                    <div>
-                        <label class="block text-sm font-semibold text-red-400 mb-1 uppercase tracking-wider">Pesan / Keluhan</label>
-                        <textarea id="complaintLainnya" rows="5" placeholder="Tulis pesan Anda..." class="w-full bg-black border-2 border-red-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition resize-none placeholder:text-red-800 shadow-[0_0_5px_red]"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tombol Kirim -->
-            <button type="submit" class="w-full bg-gradient-to-r from-red-700 to-red-900 text-white font-bold py-4 rounded-xl shadow-[0_0_20px_red] hover:shadow-[0_0_30px_red] transform hover:scale-[1.02] transition duration-200 text-lg uppercase tracking-widest flex items-center justify-center gap-2 border border-red-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.5 3.5L2.5 10.5L8.5 13.5L13.5 21.5L20.5 3.5Z" stroke="currentColor" fill="none" stroke-linejoin="round"/>
-                </svg>
-                Kirim via WhatsApp
-            </button>
-        </form>
-
-        <p class="text-xs text-center text-red-600/50 mt-6 relative z-10">* Data akan dikirim ke admin. Pastikan data benar.</p>
+    <!-- Social Icons & Copyright -->
+    <div class="social-icons">
+      <a href="https://whatsapp.com/channel/0029VaMW4ny4inoqPNCpQJ2C" class="social-icon whatsapp" target="_blank" title="WhatsApp">
+        <i class='bx bxl-whatsapp'></i>
+      </a>
+      <a href="https://github.com/RyuGameDev" class="social-icon github" target="_blank" title="GitHub">
+        <i class='bx bxl-github'></i>
+      </a>
+      <a href="https://instagram.com/yonkounoryu" class="social-icon instagram" target="_blank" title="Instagram">
+        <i class='bx bxl-instagram'></i>
+      </a>
     </div>
+    <div class="copyright">
+      &copy; 2023 Ryudev. All rights reserved.
+    </div>
+  </div>
 
-    <script>
-        (function() {
-            const productSelect = document.getElementById('product');
-            const clonebotFields = document.getElementById('clonebot-fields');
-            const sewabotFields = document.getElementById('sewabot-fields');
-            const lainnyaFields = document.getElementById('lainnya-fields');
-            const form = document.getElementById('complaintForm');
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    (function() {
+      // Inisialisasi Choices.js untuk dropdown produk
+      const productSelect = document.getElementById('product');
+      const choices = new Choices(productSelect, {
+        searchEnabled: false,
+        itemSelectText: '',
+        shouldSort: false,
+        placeholderValue: 'Pilih Produk',
+        allowHTML: false,
+      });
 
-            // Referensi input
-            const botNumber = document.getElementById('botNumber');
-            const server = document.getElementById('server');
-            const complaintClone = document.getElementById('complaintClone');
-            const groupLink = document.getElementById('groupLink');
-            const complaintSewa = document.getElementById('complaintSewa');
-            const complaintLainnya = document.getElementById('complaintLainnya');
+      // Elemen field group
+      const clonebotFields = document.getElementById('clonebot-fields');
+      const sewabotFields = document.getElementById('sewabot-fields');
+      const lainnyaFields = document.getElementById('lainnya-fields');
+      const form = document.getElementById('complaintForm');
 
-            function toggleFields() {
-                const selected = productSelect.value;
+      // Referensi input
+      const botNumber = document.getElementById('botNumber');
+      const server = document.getElementById('server');
+      const complaintClone = document.getElementById('complaintClone');
+      const groupLink = document.getElementById('groupLink');
+      const complaintSewa = document.getElementById('complaintSewa');
+      const complaintLainnya = document.getElementById('complaintLainnya');
 
-                // Sembunyikan semua
-                clonebotFields.classList.add('hidden');
-                sewabotFields.classList.add('hidden');
-                lainnyaFields.classList.add('hidden');
+      // Fungsi toggle field berdasarkan produk yang dipilih
+      function toggleFields() {
+        const selected = productSelect.value;
 
-                // Reset required
-                botNumber.required = false;
-                server.required = false;
-                complaintClone.required = false;
-                groupLink.required = false;
-                complaintSewa.required = false;
-                complaintLainnya.required = false;
+        // Sembunyikan semua grup
+        clonebotFields.classList.add('hidden');
+        sewabotFields.classList.add('hidden');
+        lainnyaFields.classList.add('hidden');
 
-                if (selected === 'clonebot') {
-                    clonebotFields.classList.remove('hidden');
-                    botNumber.required = true;
-                    server.required = true;
-                    complaintClone.required = true;
-                } else if (selected === 'sewabot') {
-                    sewabotFields.classList.remove('hidden');
-                    groupLink.required = true;
-                    complaintSewa.required = true;
-                } else if (selected === 'lainnya') {
-                    lainnyaFields.classList.remove('hidden');
-                    complaintLainnya.required = true;
-                }
-            }
+        // Reset required semua field
+        botNumber.required = false;
+        server.required = false;
+        complaintClone.required = false;
+        groupLink.required = false;
+        complaintSewa.required = false;
+        complaintLainnya.required = false;
 
-            // Event listener untuk perubahan produk
-            productSelect.addEventListener('change', toggleFields);
+        if (selected === 'clonebot') {
+          clonebotFields.classList.remove('hidden');
+          botNumber.required = true;
+          server.required = true;
+          complaintClone.required = true;
+        } else if (selected === 'sewabot') {
+          sewabotFields.classList.remove('hidden');
+          groupLink.required = true;
+          complaintSewa.required = true;
+        } else if (selected === 'lainnya') {
+          lainnyaFields.classList.remove('hidden');
+          complaintLainnya.required = true;
+        }
+      }
 
-            // Submit form
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+      // Panggil saat produk berubah
+      productSelect.addEventListener('change', toggleFields);
+      // Panggil pertama kali (tidak ada default, jadi semua hidden)
+      toggleFields();
 
-                const selected = productSelect.value;
-                if (!selected) {
-                    alert('Silakan pilih produk terlebih dahulu!');
-                    return;
-                }
+      // Handle submit
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-                let message = '.owner';
-                const now = new Date();
-                const dateStr = now.toLocaleString('id-ID', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+        const selected = productSelect.value;
+        if (!selected) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Produk Belum Dipilih',
+            text: 'Silakan pilih produk terlebih dahulu!',
+            confirmButtonColor: '#ff0000'
+          });
+          return;
+        }
 
-                if (selected === 'clonebot') {
-                    const botVal = botNumber.value.trim();
-                    const serverVal = server.value;
-                    const complaintVal = complaintClone.value.trim();
+        // Validasi berdasarkan produk
+        let isValid = false;
+        if (selected === 'clonebot') {
+          if (botNumber.value.trim() && complaintClone.value.trim()) isValid = true;
+        } else if (selected === 'sewabot') {
+          if (groupLink.value.trim() && complaintSewa.value.trim()) isValid = true;
+        } else if (selected === 'lainnya') {
+          if (complaintLainnya.value.trim()) isValid = true;
+        }
 
-                    if (!botVal || !complaintVal) {
-                        alert('Harap isi nomor bot dan keluhan!');
-                        return;
-                    }
+        if (!isValid) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Data Belum Lengkap',
+            text: 'Harap isi semua field yang diperlukan!',
+            confirmButtonColor: '#ff0000'
+          });
+          return;
+        }
 
-                    message += `\n\n━━━ *LAPORAN CLONEBOT* ━━━`;
-                    message += `\n🤖 *Nomor Bot* : ${botVal}`;
-                    message += `\n🖥️ *Server*    : Server ${serverVal}`;
-                    message += `\n📝 *Keluhan*   :\n_${complaintVal}_`;
-                } 
-                else if (selected === 'sewabot') {
-                    const linkVal = groupLink.value.trim();
-                    const complaintVal = complaintSewa.value.trim();
-
-                    if (!linkVal || !complaintVal) {
-                        alert('Harap isi link group dan keluhan!');
-                        return;
-                    }
-
-                    message += `\n\n━━━ *LAPORAN SEWABOT* ━━━`;
-                    message += `\n🔗 *Link Group* : ${linkVal}`;
-                    message += `\n📝 *Keluhan*    :\n_${complaintVal}_`;
-                } 
-                else if (selected === 'lainnya') {
-                    const complaintVal = complaintLainnya.value.trim();
-
-                    if (!complaintVal) {
-                        alert('Harap isi keluhan/pesan!');
-                        return;
-                    }
-
-                    message += `\n\n━━━ *LAPORAN LAINNYA* ━━━`;
-                    message += `\n📝 *Isi Laporan* :\n_${complaintVal}_`;
-                }
-
-                message += `\n\n📅 *Dilaporkan pada* : ${dateStr}`;
-                message += `\n━━━━━━━━━━━━━━━━━`;
-
-                const encodedMessage = encodeURIComponent(message);
-                const phoneNumber = '6285648640715';
-                const waUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-                window.open(waUrl, '_blank');
+        // Tampilkan konfirmasi sebelum kirim (seperti web asli)
+        Swal.fire({
+          title: 'Konfirmasi Laporan',
+          html: 'Pastikan data yang Anda masukkan sudah benar.<br>Laporan akan dikirim ke admin via WhatsApp.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Ya, Kirim!',
+          cancelButtonText: 'Batal',
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#d33'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Buat pesan
+            let message = '.owner';
+            const now = new Date();
+            const dateStr = now.toLocaleString('id-ID', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
             });
 
-            // Optional: nonaktifkan submit jika produk belum dipilih (sudah dicegah oleh alert di atas)
-        })();
-    </script>
+            if (selected === 'clonebot') {
+              message += `\n\n━━━ *LAPORAN CLONEBOT* ━━━`;
+              message += `\n🤖 *Nomor Bot* : ${botNumber.value.trim()}`;
+              message += `\n🖥️ *Server*    : Server ${server.value}`;
+              message += `\n📝 *Keluhan*   :\n_${complaintClone.value.trim()}_`;
+            } else if (selected === 'sewabot') {
+              message += `\n\n━━━ *LAPORAN SEWABOT* ━━━`;
+              message += `\n🔗 *Link Group* : ${groupLink.value.trim()}`;
+              message += `\n📝 *Keluhan*    :\n_${complaintSewa.value.trim()}_`;
+            } else if (selected === 'lainnya') {
+              message += `\n\n━━━ *LAPORAN LAINNYA* ━━━`;
+              message += `\n📝 *Isi Laporan* :\n_${complaintLainnya.value.trim()}_`;
+            }
+
+            message += `\n\n📅 *Dilaporkan pada* : ${dateStr}`;
+            message += `\n━━━━━━━━━━━━━━━━━`;
+
+            // Encode dan buka WA
+            const encodedMessage = encodeURIComponent(message);
+            const phoneNumber = '6285648640715';
+            const waUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+
+            // Tampilkan loading sebentar lalu redirect
+            Swal.fire({
+              title: 'Mengalihkan ke WhatsApp...',
+              text: 'Mohon tunggu sebentar',
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  window.open(waUrl, '_blank');
+                  Swal.close();
+                }, 1500);
+              }
+            });
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
