@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Keluhan Customer</title>
+    <title>Laporan Keluhan Customer (Dark)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -13,25 +13,25 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center p-4 font-sans">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-slate-900 min-h-screen flex items-center justify-center p-4 font-sans">
 
-    <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl w-full max-w-2xl p-6 md:p-8 border border-white/50">
+    <div class="bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-2xl w-full max-w-2xl p-6 md:p-8 border border-gray-700">
         <!-- Header dengan ikon -->
         <div class="text-center mb-8">
-            <div class="inline-block p-3 bg-blue-100 rounded-full mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="inline-block p-3 bg-indigo-900/50 rounded-full mb-3 border border-indigo-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold text-gray-800">Laporan Keluhan</h1>
-            <p class="text-gray-500 mt-1">Sampaikan masalahmu, kami siap membantu</p>
+            <h1 class="text-3xl font-bold text-white">Laporan Keluhan</h1>
+            <p class="text-gray-400 mt-1">Sampaikan masalahmu, kami siap membantu</p>
         </div>
 
         <form id="complaintForm" class="space-y-5">
             <!-- Dropdown Produk -->
             <div class="relative">
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Pilih Produk</label>
-                <select id="product" name="product" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition appearance-none bg-white">
+                <label class="block text-sm font-semibold text-gray-300 mb-1">Pilih Produk</label>
+                <select id="product" name="product" class="w-full bg-gray-700 border border-gray-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition appearance-none">
                     <option value="clonebot" selected>CloneBot</option>
                     <option value="sewabot">SewaBot</option>
                 </select>
@@ -45,12 +45,12 @@
                 <!-- Fields untuk CloneBot -->
                 <div id="clonebot-fields" class="space-y-4 field-transition">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nomor Bot Bermasalah</label>
-                        <input type="text" id="botNumber" name="botNumber" placeholder="Contoh: 628123456789" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Nomor Bot Bermasalah</label>
+                        <input type="text" id="botNumber" name="botNumber" placeholder="Contoh: 628123456789" class="w-full bg-gray-700 border border-gray-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition placeholder-gray-400">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Pilih Server</label>
-                        <select id="server" name="server" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Pilih Server</label>
+                        <select id="server" name="server" class="w-full bg-gray-700 border border-gray-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                             <option value="1">Server 1</option>
                             <option value="2">Server 2</option>
                             <option value="3">Server 3</option>
@@ -58,26 +58,26 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Keluhan</label>
-                        <textarea id="complaintClone" rows="4" placeholder="Tulis keluhan Anda dengan detail..." class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition resize-none"></textarea>
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Keluhan</label>
+                        <textarea id="complaintClone" rows="4" placeholder="Tulis keluhan Anda dengan detail..." class="w-full bg-gray-700 border border-gray-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none placeholder-gray-400"></textarea>
                     </div>
                 </div>
 
                 <!-- Fields untuk SewaBot (awalnya tersembunyi) -->
                 <div id="sewabot-fields" class="space-y-4 hidden field-transition">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Link Group</label>
-                        <input type="url" id="groupLink" name="groupLink" placeholder="https://t.me/..." class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Link Group</label>
+                        <input type="url" id="groupLink" name="groupLink" placeholder="https://t.me/..." class="w-full bg-gray-700 border border-gray-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition placeholder-gray-400">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Keluhan</label>
-                        <textarea id="complaintSewa" rows="4" placeholder="Tulis keluhan Anda dengan detail..." class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition resize-none"></textarea>
+                        <label class="block text-sm font-semibold text-gray-300 mb-1">Keluhan</label>
+                        <textarea id="complaintSewa" rows="4" placeholder="Tulis keluhan Anda dengan detail..." class="w-full bg-gray-700 border border-gray-600 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none placeholder-gray-400"></textarea>
                     </div>
                 </div>
             </div>
 
             <!-- Tombol Kirim -->
-            <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition duration-200 text-lg flex items-center justify-center gap-2">
+            <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-indigo-500/30 transform hover:scale-[1.02] transition duration-200 text-lg flex items-center justify-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20.5 3.5L2.5 10.5L8.5 13.5L13.5 21.5L20.5 3.5Z" stroke="currentColor" fill="none" stroke-linejoin="round"/>
                 </svg>
@@ -85,7 +85,7 @@
             </button>
         </form>
 
-        <p class="text-xs text-center text-gray-400 mt-6">* Data akan dikirim ke admin via WhatsApp. Pastikan data sudah benar.</p>
+        <p class="text-xs text-center text-gray-500 mt-6">* Data akan dikirim ke admin via WhatsApp. Pastikan data sudah benar.</p>
     </div>
 
     <script>
