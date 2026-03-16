@@ -3,48 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Keluhan - Teknologi</title>
+    <title>Laporan Keluhan · Dark Mode</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Efek glow dan transisi */
-        .glow-border:focus {
-            box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.3);
+        /* Animasi halus */
+        .field-transition {
+            transition: all 0.3s ease;
         }
-        .glow-button:hover {
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        /* Kustom scrollbar untuk textarea (opsional) */
+        textarea::-webkit-scrollbar {
+            width: 8px;
         }
-        /* Background dengan pattern garis halus */
-        body {
-            background: radial-gradient(circle at 10% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 30%),
-                        linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        textarea::-webkit-scrollbar-track {
+            background: #2d2d3a;
+            border-radius: 8px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #6b21a5;
+            border-radius: 8px;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 font-mono">
+<body class="bg-gradient-to-br from-[#0f0f17] via-[#1a1a2e] to-[#16213e] min-h-screen flex items-center justify-center p-4 font-sans">
 
-    <div class="bg-gray-900/90 backdrop-blur-sm border border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-500/20 w-full max-w-2xl p-6 md:p-8">
-        <!-- Header dengan ikon teknologi -->
+    <div class="bg-[#1e1e2f]/90 backdrop-blur-md rounded-3xl shadow-2xl shadow-indigo-500/20 w-full max-w-2xl p-6 md:p-8 border border-indigo-500/30">
+        <!-- Header dengan ikon -->
         <div class="text-center mb-8">
-            <div class="inline-block p-3 bg-cyan-900/50 border border-cyan-400 rounded-full mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            <div class="inline-block p-3 bg-indigo-900/50 rounded-full mb-3 border border-indigo-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400">LAPORAN KELUHAN</h1>
-            <p class="text-cyan-600 mt-1 text-sm">sistem pelaporan berbasis teknologi</p>
+            <h1 class="text-3xl font-bold text-white">Laporan Keluhan</h1>
+            <p class="text-indigo-200/70 mt-1">Pilih produk, sampaikan kendala</p>
         </div>
 
         <form id="complaintForm" class="space-y-5">
-            <!-- Dropdown Produk dengan opsi Lainnya -->
+            <!-- Dropdown Produk -->
             <div class="relative">
-                <label class="block text-sm font-semibold text-cyan-300 mb-1 tracking-wider">PRODUK</label>
-                <select id="product" name="product" class="w-full bg-gray-800 border border-cyan-500/50 rounded-xl p-3 text-cyan-100 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition appearance-none glow-border">
-                    <option value="clonebot" class="bg-gray-800">CloneBot</option>
-                    <option value="sewabot" class="bg-gray-800">SewaBot</option>
-                    <option value="others" class="bg-gray-800">Lainnya</option>
+                <label class="block text-sm font-semibold text-indigo-200 mb-1">Pilih Produk</label>
+                <select id="product" name="product" class="w-full bg-[#2d2d3a] border border-indigo-500/50 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition appearance-none">
+                    <option value="clonebot" class="bg-[#2d2d3a]">CloneBot</option>
+                    <option value="sewabot" class="bg-[#2d2d3a]">SewaBot</option>
+                    <option value="lainnya" class="bg-[#2d2d3a]">Lainnya</option>
                 </select>
-                <div class="pointer-events-none absolute right-3 top-10 text-cyan-500">
+                <div class="pointer-events-none absolute right-3 top-10 text-indigo-300">
                     ▼
                 </div>
             </div>
@@ -54,55 +58,55 @@
                 <!-- Fields untuk CloneBot -->
                 <div id="clonebot-fields" class="space-y-4 field-transition">
                     <div>
-                        <label class="block text-sm font-semibold text-cyan-300 mb-1">NOMOR BOT</label>
-                        <input type="text" id="botNumber" placeholder="628123456789" class="w-full bg-gray-800 border border-cyan-500/50 rounded-xl p-3 text-cyan-100 placeholder-cyan-700 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition glow-border">
+                        <label class="block text-sm font-semibold text-indigo-200 mb-1">Nomor Bot Bermasalah</label>
+                        <input type="text" id="botNumber" name="botNumber" placeholder="Contoh: 628123456789" class="w-full bg-[#2d2d3a] border border-indigo-500/50 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition placeholder:text-indigo-200/40">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-cyan-300 mb-1">SERVER</label>
-                        <select id="server" name="server" class="w-full bg-gray-800 border border-cyan-500/50 rounded-xl p-3 text-cyan-100 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition">
-                            <option value="1" class="bg-gray-800">Server 1</option>
-                            <option value="2" class="bg-gray-800">Server 2</option>
-                            <option value="3" class="bg-gray-800">Server 3</option>
-                            <option value="4" class="bg-gray-800">Server 4</option>
+                        <label class="block text-sm font-semibold text-indigo-200 mb-1">Pilih Server</label>
+                        <select id="server" name="server" class="w-full bg-[#2d2d3a] border border-indigo-500/50 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition">
+                            <option value="1" class="bg-[#2d2d3a]">Server 1</option>
+                            <option value="2" class="bg-[#2d2d3a]">Server 2</option>
+                            <option value="3" class="bg-[#2d2d3a]">Server 3</option>
+                            <option value="4" class="bg-[#2d2d3a]">Server 4</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-cyan-300 mb-1">KELUHAN</label>
-                        <textarea id="complaintClone" rows="4" placeholder="Tulis keluhan detail..." class="w-full bg-gray-800 border border-cyan-500/50 rounded-xl p-3 text-cyan-100 placeholder-cyan-700 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition resize-none glow-border"></textarea>
+                        <label class="block text-sm font-semibold text-indigo-200 mb-1">Keluhan</label>
+                        <textarea id="complaintClone" rows="4" placeholder="Tulis keluhan Anda dengan detail..." class="w-full bg-[#2d2d3a] border border-indigo-500/50 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition resize-none placeholder:text-indigo-200/40"></textarea>
                     </div>
                 </div>
 
                 <!-- Fields untuk SewaBot (awalnya tersembunyi) -->
                 <div id="sewabot-fields" class="space-y-4 hidden field-transition">
                     <div>
-                        <label class="block text-sm font-semibold text-cyan-300 mb-1">LINK GROUP</label>
-                        <input type="url" id="groupLink" placeholder="https://t.me/..." class="w-full bg-gray-800 border border-cyan-500/50 rounded-xl p-3 text-cyan-100 placeholder-cyan-700 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition glow-border">
+                        <label class="block text-sm font-semibold text-indigo-200 mb-1">Link Group</label>
+                        <input type="url" id="groupLink" name="groupLink" placeholder="https://t.me/..." class="w-full bg-[#2d2d3a] border border-indigo-500/50 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition placeholder:text-indigo-200/40">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-cyan-300 mb-1">KELUHAN</label>
-                        <textarea id="complaintSewa" rows="4" placeholder="Tulis keluhan detail..." class="w-full bg-gray-800 border border-cyan-500/50 rounded-xl p-3 text-cyan-100 placeholder-cyan-700 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition resize-none glow-border"></textarea>
+                        <label class="block text-sm font-semibold text-indigo-200 mb-1">Keluhan</label>
+                        <textarea id="complaintSewa" rows="4" placeholder="Tulis keluhan Anda dengan detail..." class="w-full bg-[#2d2d3a] border border-indigo-500/50 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition resize-none placeholder:text-indigo-200/40"></textarea>
                     </div>
                 </div>
 
                 <!-- Fields untuk Lainnya (hanya keluhan) -->
-                <div id="others-fields" class="space-y-4 hidden field-transition">
+                <div id="lainnya-fields" class="space-y-4 hidden field-transition">
                     <div>
-                        <label class="block text-sm font-semibold text-cyan-300 mb-1">PESAN / KELUHAN</label>
-                        <textarea id="complaintOthers" rows="5" placeholder="Tulis pesan atau keluhan Anda..." class="w-full bg-gray-800 border border-cyan-500/50 rounded-xl p-3 text-cyan-100 placeholder-cyan-700 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition resize-none glow-border"></textarea>
+                        <label class="block text-sm font-semibold text-indigo-200 mb-1">Keluhan / Pesan</label>
+                        <textarea id="complaintLainnya" rows="5" placeholder="Silakan tulis keluhan atau pesan Anda..." class="w-full bg-[#2d2d3a] border border-indigo-500/50 text-white rounded-xl p-3 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition resize-none placeholder:text-indigo-200/40"></textarea>
                     </div>
                 </div>
             </div>
 
-            <!-- Tombol Kirim dengan efek neon -->
-            <button type="submit" class="w-full bg-gradient-to-r from-cyan-600 to-blue-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-cyan-500/50 transform hover:scale-[1.02] transition duration-200 text-lg flex items-center justify-center gap-2 glow-button">
+            <!-- Tombol Kirim -->
+            <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-700/30 hover:shadow-indigo-600/50 transform hover:scale-[1.02] transition duration-200 text-lg flex items-center justify-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20.5 3.5L2.5 10.5L8.5 13.5L13.5 21.5L20.5 3.5Z" stroke="currentColor" fill="none" stroke-linejoin="round"/>
                 </svg>
-                KIRIM LAPORAN VIA WHATSAPP
+                Kirim Laporan via WhatsApp
             </button>
         </form>
 
-        <p class="text-xs text-center text-cyan-700 mt-6">* Data akan dikirim ke admin. Pastikan data sudah benar.</p>
+        <p class="text-xs text-center text-indigo-200/50 mt-6">* Data akan dikirim ke admin via WhatsApp. Pastikan data sudah benar.</p>
     </div>
 
     <script>
@@ -111,7 +115,7 @@
             const productSelect = document.getElementById('product');
             const clonebotFields = document.getElementById('clonebot-fields');
             const sewabotFields = document.getElementById('sewabot-fields');
-            const othersFields = document.getElementById('others-fields');
+            const lainnyaFields = document.getElementById('lainnya-fields');
             const form = document.getElementById('complaintForm');
 
             // Referensi input
@@ -120,25 +124,26 @@
             const complaintClone = document.getElementById('complaintClone');
             const groupLink = document.getElementById('groupLink');
             const complaintSewa = document.getElementById('complaintSewa');
-            const complaintOthers = document.getElementById('complaintOthers');
+            const complaintLainnya = document.getElementById('complaintLainnya');
 
             // Fungsi toggle field berdasarkan produk yang dipilih
             function toggleFields() {
                 const selected = productSelect.value;
 
-                // Sembunyikan semua grup field terlebih dahulu
+                // Sembunyikan semua grup terlebih dahulu
                 clonebotFields.classList.add('hidden');
                 sewabotFields.classList.add('hidden');
-                othersFields.classList.add('hidden');
+                lainnyaFields.classList.add('hidden');
 
-                // Nonaktifkan required semua field
+                // Reset required semua field
                 botNumber.required = false;
                 server.required = false;
                 complaintClone.required = false;
                 groupLink.required = false;
                 complaintSewa.required = false;
-                complaintOthers.required = false;
+                complaintLainnya.required = false;
 
+                // Tampilkan grup yang sesuai dan set required
                 if (selected === 'clonebot') {
                     clonebotFields.classList.remove('hidden');
                     botNumber.required = true;
@@ -148,13 +153,13 @@
                     sewabotFields.classList.remove('hidden');
                     groupLink.required = true;
                     complaintSewa.required = true;
-                } else { // others
-                    othersFields.classList.remove('hidden');
-                    complaintOthers.required = true;
+                } else if (selected === 'lainnya') {
+                    lainnyaFields.classList.remove('hidden');
+                    complaintLainnya.required = true;
                 }
             }
 
-            // Panggil pertama kali untuk set state awal (CloneBot)
+            // Panggil pertama kali untuk set state awal (CloneBot aktif)
             toggleFields();
 
             // Event listener saat produk diubah
@@ -206,16 +211,16 @@
                     message += `\n🔗 *Link Group* : ${linkVal}`;
                     message += `\n📝 *Keluhan*    :\n_${complaintVal}_`;
                 } 
-                else { // others
-                    const othersVal = complaintOthers.value.trim();
+                else if (selected === 'lainnya') {
+                    const complaintVal = complaintLainnya.value.trim();
 
-                    if (!othersVal) {
-                        alert('Harap isi pesan/keluhan!');
+                    if (!complaintVal) {
+                        alert('Harap isi keluhan/pesan!');
                         return;
                     }
 
                     message += `\n\n━━━ *LAPORAN LAINNYA* ━━━`;
-                    message += `\n📝 *Pesan* :\n_${othersVal}_`;
+                    message += `\n📝 *Isi Laporan* :\n_${complaintVal}_`;
                 }
 
                 // Tambahkan footer laporan
@@ -225,10 +230,10 @@
                 // Encode pesan untuk URL
                 const encodedMessage = encodeURIComponent(message);
 
-                // Nomor tujuan
+                // Nomor tujuan (tanpa tanda + atau spasi)
                 const phoneNumber = '6285648640715';
 
-                // Buat URL WhatsApp
+                // Buat URL WhatsApp (menggunakan api.whatsapp.com agar lebih kompatibel)
                 const waUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
 
                 // Buka di tab baru
