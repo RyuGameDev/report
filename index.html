@@ -1,255 +1,253 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Keluhan · CloneBot & SewaBot</title>
-    <!-- Tailwind via CDN + tambahan utility -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font awesome untuk ikon (opsional, mempercantik) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Custom glassmorphism dan efek glow */
-        body {
-            background: radial-gradient(circle at 10% 20%, #1a0b2e, #0b0719 90%);
-            min-height: 100vh;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-        .glass-card {
-            background: rgba(20, 15, 40, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 115, 230, 0.25);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 70, 200, 0.2) inset, 0 0 20px rgba(180, 70, 255, 0.3);
-        }
-        .glow-input {
-            transition: all 0.2s ease;
-        }
-        .glow-input:focus {
-            border-color: #f472b6 !important;
-            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.3), 0 0 15px #c084fc;
-        }
-        .neon-button {
-            background: linear-gradient(135deg, #f43f5e, #e11d48, #a21caf);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .neon-button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 25px #f472b6, 0 0 5px #c084fc;
-        }
-        select, input, textarea {
-            color-scheme: dark;
-        }
-        /* animated background grain (opsional) */
-        .bg-grain {
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔧 Laporan Keluhan Customer · BotKit</title>
+  <!-- Tailwind CSS via CDN + tambahan font & efek kecil -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .fade-effect { transition: all 0.2s ease-in-out; }
+    .card-shadow { box-shadow: 0 20px 35px -8px rgba(0,0,0,0.15), 0 5px 15px -5px rgba(0,0,0,0.05); }
+  </style>
 </head>
-<body class="flex items-center justify-center p-5 relative">
-    <!-- overlay grain -->
-    <div class="fixed inset-0 bg-grain opacity-40 pointer-events-none z-0"></div>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen flex items-center justify-center p-5">
+
+  <!-- CARD UTAMA -->
+  <div class="w-full max-w-2xl bg-white/90 backdrop-blur-sm rounded-3xl card-shadow border border-white/40 p-6 md:p-8">
     
-    <div class="relative z-10 w-full max-w-2xl">
-        <!-- header dengan aksen -->
-        <div class="text-center mb-6">
-            <div class="inline-block p-3 rounded-full bg-gradient-to-r from-pink-600/30 to-purple-600/30 backdrop-blur-sm border border-pink-400/30 shadow-lg mb-2">
-                <i class="fas fa-bug text-4xl text-pink-200 drop-shadow-[0_0_8px_#f0f]"></i>
-            </div>
-            <h1 class="text-4xl font-black bg-gradient-to-r from-pink-300 via-fuchsia-300 to-purple-300 bg-clip-text text-transparent drop-shadow-lg">LAPORAN KELUHAN</h1>
-            <p class="text-fuchsia-200/70 text-sm tracking-wider">✨ clonebot · sewabot ✨</p>
-        </div>
-
-        <!-- CARD FORM -->
-        <div class="glass-card rounded-3xl p-8 md:p-10 border border-pink-500/40 shadow-2xl">
-            <form id="complaintForm" onsubmit="return false;">
-                <!-- dropdown produk -->
-                <div class="mb-8">
-                    <label class="block text-fuchsia-200 text-sm font-bold mb-2 tracking-wider"><i class="fas fa-box mr-2 text-pink-300"></i>PILIH PRODUK</label>
-                    <select id="productSelect" name="produk" required class="w-full p-4 rounded-2xl bg-white/10 border border-pink-400/50 text-white placeholder-pink-200/60 outline-none glow-input appearance-none cursor-pointer" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23f9a8d4%22><path stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22 /></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.5rem;">
-                        <option value="" selected disabled class="bg-gray-800 text-white/70">-- pilih produk --</option>
-                        <option value="clonebot" class="bg-gray-800 text-white">🤖 CloneBot</option>
-                        <option value="sewabot" class="bg-gray-800 text-white">📦 SewaBot</option>
-                    </select>
-                </div>
-
-                <!-- container khusus clonebot (muncul jika clonebot dipilih) -->
-                <div id="clonebotFields" class="space-y-6 hidden transition-all duration-300">
-                    <div>
-                        <label class="block text-fuchsia-200 text-sm font-bold mb-2"><i class="fas fa-robot mr-2 text-pink-300"></i>NOMOR BOT BERMASALAH</label>
-                        <input type="text" id="botNumber" placeholder="cth: 6281234567890" class="w-full p-4 rounded-2xl bg-white/10 border border-pink-400/40 text-white placeholder-pink-300/50 outline-none glow-input">
-                    </div>
-                    <div>
-                        <label class="block text-fuchsia-200 text-sm font-bold mb-2"><i class="fas fa-server mr-2 text-pink-300"></i>PILIH SERVER</label>
-                        <select id="serverSelect" class="w-full p-4 rounded-2xl bg-white/10 border border-pink-400/40 text-white outline-none glow-input">
-                            <option value="" disabled selected class="bg-gray-800">-- server --</option>
-                            <option value="Server 1" class="bg-gray-800">Server 1</option>
-                            <option value="Server 2" class="bg-gray-800">Server 2</option>
-                            <option value="Server 3" class="bg-gray-800">Server 3</option>
-                            <option value="Server 4" class="bg-gray-800">Server 4</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-fuchsia-200 text-sm font-bold mb-2"><i class="fas fa-comment-dots mr-2 text-pink-300"></i>KELUHAN / KENDALA</label>
-                        <textarea id="clonebotComplaint" rows="4" placeholder="Jelaskan masalah yang terjadi..." class="w-full p-4 rounded-2xl bg-white/10 border border-pink-400/40 text-white placeholder-pink-300/50 outline-none glow-input resize-none"></textarea>
-                    </div>
-                </div>
-
-                <!-- container khusus sewabot (muncul jika sewabot dipilih) -->
-                <div id="sewabotFields" class="space-y-6 hidden transition-all duration-300">
-                    <div>
-                        <label class="block text-fuchsia-200 text-sm font-bold mb-2"><i class="fas fa-link mr-2 text-pink-300"></i>LINK GROUP</label>
-                        <input type="url" id="groupLink" placeholder="https://chat.whatsapp.com/..." class="w-full p-4 rounded-2xl bg-white/10 border border-pink-400/40 text-white placeholder-pink-300/50 outline-none glow-input">
-                    </div>
-                    <div>
-                        <label class="block text-fuchsia-200 text-sm font-bold mb-2"><i class="fas fa-comment-dots mr-2 text-pink-300"></i>KELUHAN / KENDALA</label>
-                        <textarea id="sewabotComplaint" rows="4" placeholder="Jelaskan masalah yang terjadi..." class="w-full p-4 rounded-2xl bg-white/10 border border-pink-400/40 text-white placeholder-pink-300/50 outline-none glow-input resize-none"></textarea>
-                    </div>
-                </div>
-
-                <!-- pesan error/validasi sederhana (optional) -->
-                <div id="validationMessage" class="mt-4 text-pink-300 text-sm"></div>
-
-                <!-- tombol submit -->
-                <div class="mt-10 text-center">
-                    <button type="button" id="submitBtn" class="neon-button w-full md:w-auto px-12 py-5 rounded-2xl text-white font-black text-xl tracking-widest shadow-2xl flex items-center justify-center gap-3 mx-auto">
-                        <i class="fab fa-whatsapp text-2xl"></i> KIRIM LAPORAN
-                    </button>
-                    <p class="text-xs text-fuchsia-300/50 mt-4">* akan diarahkan ke WhatsApp .owner</p>
-                </div>
-            </form>
-        </div>
+    <!-- HEADER dengan ikon -->
+    <div class="flex items-center gap-3 mb-6">
+      <div class="p-3 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-2xl text-white shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent">Laporan Keluhan</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Pilih produk, isi detail, kirim langsung ke owner</p>
+      </div>
     </div>
 
-    <script>
-        (function() {
-            // elemen2 penting
-            const productSelect = document.getElementById('productSelect');
-            const clonebotDiv = document.getElementById('clonebotFields');
-            const sewabotDiv = document.getElementById('sewabotFields');
-            const submitBtn = document.getElementById('submitBtn');
-            const validationMsg = document.getElementById('validationMessage');
+    <!-- FORM (tidak pakai tag form supaya tidak reload) -->
+    <div class="space-y-5">
+      
+      <!-- DROPDOWN PRODUK (harus dipilih manual) -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">🧩 Produk yang digunakan</label>
+        <select id="productSelect" class="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 focus:bg-white focus:ring-2 focus:ring-purple-300 focus:border-purple-400 outline-none transition cursor-pointer">
+          <option value="" disabled selected>— Pilih produk (wajib) —</option>
+          <option value="clonebot" class="py-2">🤖 CloneBot</option>
+          <option value="sewabot" class="py-2">📦 SewaBot</option>
+          <option value="lainnya" class="py-2">✨ Lainnya (pesan umum)</option>
+        </select>
+      </div>
 
-            // field khusus clonebot
-            const botNumber = document.getElementById('botNumber');
-            const serverSelect = document.getElementById('serverSelect');
-            const clonebotComplaint = document.getElementById('clonebotComplaint');
+      <!-- ========== FIELDS DINAMIS ========== -->
+      
+      <!-- 1. CLONEBOT FIELDS (hidden awal) -->
+      <div id="clonebotFields" class="hidden space-y-4 fade-effect">
+        <div class="border-t border-dashed border-purple-200 my-4"></div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5 ml-1">📱 Nomor Bot Bermasalah</label>
+          <input type="text" id="botNumber" placeholder="cth: 628123456789" class="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 focus:bg-white focus:ring-2 focus:ring-purple-300 focus:border-purple-400 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5 ml-1">🌐 Pilih Server</label>
+          <select id="serverSelect" class="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 focus:bg-white focus:ring-2 focus:ring-purple-300 focus:border-purple-400 outline-none transition">
+            <option value="" disabled selected>— Pilih server —</option>
+            <option value="Server 1">Server 1 ⚡</option>
+            <option value="Server 2">Server 2 ⚡</option>
+            <option value="Server 3">Server 3 ⚡</option>
+            <option value="Server 4">Server 4 ⚡</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5 ml-1">📝 Detail Keluhan</label>
+          <textarea id="clonebotComplaint" rows="3" placeholder="Jelaskan masalah yang terjadi ..." class="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 focus:bg-white focus:ring-2 focus:ring-purple-300 focus:border-purple-400 outline-none transition resize-none"></textarea>
+        </div>
+      </div>
 
-            // field khusus sewabot
-            const groupLink = document.getElementById('groupLink');
-            const sewabotComplaint = document.getElementById('sewabotComplaint');
+      <!-- 2. SEWABOT FIELDS (hidden awal) -->
+      <div id="sewabotFields" class="hidden space-y-4 fade-effect">
+        <div class="border-t border-dashed border-indigo-200 my-4"></div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5 ml-1">🔗 Link Group/Channel</label>
+          <input type="url" id="groupLink" placeholder="https://t.me/..." class="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 focus:bg-white focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5 ml-1">📝 Keluhan / Permintaan</label>
+          <textarea id="sewabotComplaint" rows="3" placeholder="Ceritakan kendala atau masukan..." class="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 focus:bg-white focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 outline-none transition resize-none"></textarea>
+        </div>
+      </div>
 
-            // fungsi untuk reset/show field sesuai produk
-            function toggleFields() {
-                const selected = productSelect.value;
-                // sembunyikan kedua dulu
-                clonebotDiv.classList.add('hidden');
-                sewabotDiv.classList.add('hidden');
-                
-                if (selected === 'clonebot') {
-                    clonebotDiv.classList.remove('hidden');
-                } else if (selected === 'sewabot') {
-                    sewabotDiv.classList.remove('hidden');
-                }
-                // kosongkan pesan validasi
-                validationMsg.innerText = '';
-            }
+      <!-- 3. LAINNYA FIELDS (hidden awal) dengan sentuhan tema menarik -->
+      <div id="lainnyaFields" class="hidden space-y-4 fade-effect">
+        <div class="border-t border-dashed border-pink-200 my-4"></div>
+        <div class="bg-gradient-to-r from-pink-50 to-orange-50 p-4 rounded-xl border border-pink-200">
+          <div class="flex items-center gap-2 text-pink-700 text-sm font-medium mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+            <span>Pesan bebas ✨</span>
+          </div>
+          <textarea id="otherMessage" rows="4" placeholder="Tulis pertanyaan, saran, atau pesan apa saja ... (bisa pakai format bebas)" class="w-full p-3.5 rounded-xl border border-pink-200 bg-white/70 focus:bg-white focus:ring-2 focus:ring-pink-300 focus:border-pink-400 outline-none transition resize-none"></textarea>
+          <p class="text-xs text-pink-500 mt-2 italic">💡 untuk pertanyaan, kritik, atau sekedar ngobrol dengan owner</p>
+        </div>
+      </div>
 
-            // panggil saat halaman dimuat (default hidden)
-            toggleFields();
+      <!-- TOMBOL SUBMIT dengan ikon WA -->
+      <div class="pt-4">
+        <button id="submitBtn" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-4 px-5 rounded-xl shadow-lg shadow-green-200/70 transition transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-3 text-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.077 4.928C17.191 3.041 14.683 2 12.006 2 6.798 2 2.548 6.18 2.548 11.304c0 1.693.444 3.342 1.289 4.805L2 22l6.131-1.728c1.427.758 3.017 1.147 4.644 1.147 5.208 0 9.458-4.18 9.458-9.304 0-2.503-1.02-4.86-2.868-6.647zM12.006 20.52c-1.456 0-2.886-.386-4.115-1.115l-.295-.175-3.676.99 1.036-3.505-.183-.307c-.74-1.225-1.131-2.607-1.131-4.033 0-4.28 3.518-7.76 7.839-7.76 2.104 0 4.079.817 5.563 2.301 1.484 1.483 2.3 3.448 2.3 5.54-.001 4.282-3.52 7.762-7.838 7.762z"/><path d="M13.619 13.127c-.295-.148-1.746-.858-2.016-.957-.27-.099-.466-.148-.662.148s-.76.957-.932 1.154c-.172.197-.344.222-.638.074-.295-.148-1.245-.457-2.37-1.454-.876-.777-1.468-1.736-1.64-2.03-.172-.294-.018-.453.13-.6.133-.13.295-.344.442-.517.148-.173.197-.296.295-.493.099-.197.049-.37-.025-.518-.074-.148-.661-1.586-.905-2.172-.238-.57-.48-.493-.66-.502-.172-.009-.369-.009-.567-.009s-.518.074-.79.37c-.27.296-1.034 1.007-1.034 2.456 0 1.45 1.059 2.85 1.206 3.046.148.197 2.034 3.172 5.02 4.33.7.27 1.246.432 1.673.554.703.197 1.343.17 1.85.104.565-.074 1.738-.71 1.983-1.396.245-.686.245-1.273.172-1.395-.074-.123-.27-.197-.566-.345z"/></svg>
+          Kirim Laporan via WhatsApp
+        </button>
+      </div>
 
-            // event change produk
-            productSelect.addEventListener('change', toggleFields);
+      <!-- informasi kecil -->
+      <p class="text-xs text-center text-slate-400 pt-3 border-t border-slate-100">Semua laporan akan diteruskan ke nomor owner • <span class="font-mono">6285648640715</span></p>
+    </div>
+  </div>
 
-            // fungsi bikin teks whatsapp
-            function composeWhatsAppMessage() {
-                const produk = productSelect.value;
-                if (!produk) {
-                    validationMsg.innerText = '⚠️ Silakan pilih produk terlebih dahulu.';
-                    return null;
-                }
+  <script>
+    (function() {
+      // ----- ELEMEN YANG DIPERLUKAN -----
+      const productSelect = document.getElementById('productSelect');
+      const clonebotDiv = document.getElementById('clonebotFields');
+      const sewabotDiv = document.getElementById('sewabotFields');
+      const lainnyaDiv = document.getElementById('lainnyaFields');
+      const submitBtn = document.getElementById('submitBtn');
 
-                let message = '.owner';  // diawali .owner
-                message += `\nProduk: ${produk === 'clonebot' ? 'CloneBot' : 'SewaBot'}`;
+      // input fields clonebot
+      const botNumber = document.getElementById('botNumber');
+      const serverSelect = document.getElementById('serverSelect');
+      const clonebotComplaint = document.getElementById('clonebotComplaint');
 
-                // validasi dan ambil data sesuai produk
-                if (produk === 'clonebot') {
-                    const bot = botNumber.value.trim();
-                    const server = serverSelect.value;
-                    const keluhan = clonebotComplaint.value.trim();
+      // input fields sewabot
+      const groupLink = document.getElementById('groupLink');
+      const sewabotComplaint = document.getElementById('sewabotComplaint');
 
-                    if (!bot) {
-                        validationMsg.innerText = '⚠️ Nomor bot harus diisi.';
-                        return null;
-                    }
-                    if (!server) {
-                        validationMsg.innerText = '⚠️ Pilih server terlebih dahulu.';
-                        return null;
-                    }
-                    if (!keluhan) {
-                        validationMsg.innerText = '⚠️ Kolom keluhan tidak boleh kosong.';
-                        return null;
-                    }
+      // input lainnya
+      const otherMessage = document.getElementById('otherMessage');
 
-                    message += `\nNomor Bot: ${bot}`;
-                    message += `\nServer: ${server}`;
-                    message += `\nKeluhan: ${keluhan}`;
+      // ----- FUNCTION: tampilkan field sesuai pilihan -----
+      function toggleFields() {
+        const selected = productSelect.value;
+        // sembunyikan semua dulu
+        clonebotDiv.classList.add('hidden');
+        sewabotDiv.classList.add('hidden');
+        lainnyaDiv.classList.add('hidden');
 
-                } else if (produk === 'sewabot') {
-                    const link = groupLink.value.trim();
-                    const keluhan = sewabotComplaint.value.trim();
+        if (selected === 'clonebot') {
+          clonebotDiv.classList.remove('hidden');
+        } else if (selected === 'sewabot') {
+          sewabotDiv.classList.remove('hidden');
+        } else if (selected === 'lainnya') {
+          lainnyaDiv.classList.remove('hidden');
+        }
+      }
 
-                    if (!link) {
-                        validationMsg.innerText = '⚠️ Link group harus diisi.';
-                        return null;
-                    }
-                    if (!keluhan) {
-                        validationMsg.innerText = '⚠️ Kolom keluhan tidak boleh kosong.';
-                        return null;
-                    }
+      // panggil saat produk berubah
+      productSelect.addEventListener('change', toggleFields);
+      // inisialisasi (tersembunyi semua karena default kosong)
+      toggleFields();
 
-                    message += `\nLink Group: ${link}`;
-                    message += `\nKeluhan: ${keluhan}`;
-                }
+      // ----- FUNCTION: validasi dan kirim ke WhatsApp -----
+      function handleSubmit() {
+        const product = productSelect.value;
+        if (!product) {
+          alert('⚠️ Silakan pilih produk terlebih dahulu.');
+          return;
+        }
 
-                return message;
-            }
+        let message = '';
+        // Header selalu .owner + baris baru
+        message = `.owner\n`;
 
-            // event tombol submit
-            submitBtn.addEventListener('click', function() {
-                const message = composeWhatsAppMessage();
-                if (!message) return;  // validasi gagal, sudah di-set
+        // Tambahkan produk
+        let productDisplay = '';
+        if (product === 'clonebot') productDisplay = '🤖 CloneBot';
+        else if (product === 'sewabot') productDisplay = '📦 SewaBot';
+        else if (product === 'lainnya') productDisplay = '✨ Lainnya';
 
-                // encode pesan untuk URL
-                const encodedMessage = encodeURIComponent(message);
-                const phoneNumber = '6285648640715';  // tanpa +
-                const waURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        message += `📌 *Produk*: ${productDisplay}\n`;
 
-                // redirect ke whatsapp
-                window.location.href = waURL;
-            });
+        // VALIDASI & AMBIL DATA SESUAI PRODUK
+        if (product === 'clonebot') {
+          const bot = botNumber.value.trim();
+          const server = serverSelect.value;
+          const keluhan = clonebotComplaint.value.trim();
 
-            // opsional: enter di form tidak melakukan apa2 (karena onsubmit false)
-            // tambahan: hapus pesan validasi saat user mengetik ulang di field?
-            const allFields = [botNumber, serverSelect, clonebotComplaint, groupLink, sewabotComplaint];
-            allFields.forEach(field => {
-                if (field) {
-                    field.addEventListener('input', function() {
-                        validationMsg.innerText = '';
-                    });
-                    field.addEventListener('change', function() {
-                        validationMsg.innerText = '';
-                    });
-                }
-            });
-            productSelect.addEventListener('change', function() {
-                validationMsg.innerText = '';
-            });
-        })();
-    </script>
+          if (!bot) {
+            alert('❌ Nomor bot harus diisi.');
+            return;
+          }
+          if (!server) {
+            alert('❌ Pilih server terlebih dahulu.');
+            return;
+          }
+          if (!keluhan) {
+            alert('❌ Kolom keluhan harus diisi.');
+            return;
+          }
 
-    <!-- catatan: validasi hanya front-end, pastikan nomor tujuan benar -->
-    <!-- untuk tampilan lebih maksimal, tambahkan meta viewport sudah ada -->
+          message += `📱 *Nomor Bot*: ${bot}\n`;
+          message += `🌐 *Server*: ${server}\n`;
+          message += `📝 *Keluhan*: ${keluhan}\n`;
+        } 
+        else if (product === 'sewabot') {
+          const link = groupLink.value.trim();
+          const keluhan = sewabotComplaint.value.trim();
+
+          if (!link) {
+            alert('❌ Link grup / channel harus diisi.');
+            return;
+          }
+          if (!keluhan) {
+            alert('❌ Kolom keluhan harus diisi.');
+            return;
+          }
+
+          message += `🔗 *Link Group*: ${link}\n`;
+          message += `📝 *Keluhan*: ${keluhan}\n`;
+        } 
+        else if (product === 'lainnya') {
+          const pesan = otherMessage.value.trim();
+          if (!pesan) {
+            alert('❌ Pesan tidak boleh kosong.');
+            return;
+          }
+          // Untuk lainnya, kita bisa kasih label "Pesan" biar menarik
+          message += `💬 *Pesan*: ${pesan}\n`;
+        }
+
+        // Tambahkan footer biar makin menarik (opsional)
+        message += `\n⏱️ *Dikirim*: ${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB`;
+
+        // Encode untuk URL WhatsApp
+        const waNumber = '6285648640715';  // tanpa tanda + atau spasi
+        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+
+        // Buka di tab baru
+        window.open(waUrl, '_blank');
+      }
+
+      // Event tombol submit
+      submitBtn.addEventListener('click', handleSubmit);
+
+      // (Opsional) tekan enter di input tidak reload
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+
+    })();
+  </script>
+
+  <!-- sedikit sentuhan tambahan (opsional) -->
+  <div class="fixed bottom-4 left-4 opacity-20 text-xs text-slate-400 select-none pointer-events-none">
+    ✦ bot keluhan ✦
+  </div>
 </body>
 </html>
