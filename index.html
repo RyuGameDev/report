@@ -1,128 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laporan Keluhan · Customer Care</title>
-  <!-- Tailwind via CDN + basic inter font -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Lapor Keluhan · Support Care</title>
+  <!-- Tailwind + Font Inter -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', system-ui, sans-serif; }
-    /* smooth fade for field groups */
+    * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    body {
+      background: radial-gradient(circle at 10% 30%, rgba(238, 242, 255, 0.9), rgba(224, 231, 255, 0.95));
+    }
     .field-group {
-      transition: opacity 0.2s ease-in-out;
+      transition: all 0.25s ease-in-out;
+    }
+    /* custom smooth shadow */
+    .glass-card {
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    input, select, textarea {
+      transition: all 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      transform: translateY(-1px);
+    }
+    .btn-pulse:active {
+      transform: scale(0.97);
+    }
+    /* toast sederhana */
+    .toast-notif {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      z-index: 999;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+      backdrop-filter: blur(8px);
+      background: rgba(15, 23, 42, 0.9);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-sky-50 via-indigo-50 to-purple-50 min-h-screen flex items-center justify-center p-5">
+<body class="min-h-screen flex items-center justify-center p-4 md:p-6">
 
-  <!-- glassmorphism card -->
-  <div class="w-full max-w-2xl bg-white/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 p-6 md:p-8">
+  <!-- toast notification -->
+  <div id="toastMsg" class="toast-notif"></div>
+
+  <div class="w-full max-w-2xl glass-card rounded-3xl shadow-2xl p-5 md:p-8 transition-all">
     
-    <!-- header with icon -->
-    <div class="flex items-center gap-3 mb-6">
-      <div class="p-3 bg-indigo-100 rounded-2xl shadow-inner">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+    <!-- Header dengan ilustrasi modern -->
+    <div class="flex items-start gap-4 mb-5">
+      <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-3 rounded-2xl shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
         </svg>
       </div>
-      <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Laporkan keluhan</h1>
-    </div>
-    
-    <p class="text-gray-600 mb-7 ml-1 border-l-4 border-indigo-300 pl-4 italic">Pilih produk yang kamu gunakan, isi sesuai formulir, dan kirim langsung ke tim support.</p>
-
-    <!-- FORM CONTAINER -->
-    <form id="reportForm" class="space-y-6">
-      
-      <!-- DROPDOWN PRODUK (harus dipilih manual) -->
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-1 ml-1" for="produk">📦 Pilih produk dulu ya</label>
-        <select id="produk" name="produk" class="w-full px-5 py-3.5 rounded-xl border border-gray-200 bg-white/70 shadow-sm focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 outline-none transition">
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-800 to-purple-800 bg-clip-text text-transparent">Lapor Keluhan</h1>
+        <p class="text-gray-600 text-sm mt-1 border-l-3 border-indigo-300 pl-3">Pilih produk, isi detail, kirim langsung ke tim support</p>
+      </div>
+    </div>
+
+    <!-- FORM UTAMA -->
+    <form id="reportForm" class="space-y-6 mt-4">
+      
+      <!-- Pilihan Produk dengan ikon -->
+      <div>
+        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+          <span>📦</span> Pilih produk yang digunakan
+        </label>
+        <select id="produk" name="produk" class="w-full px-5 py-3.5 rounded-xl border border-gray-200 bg-white/80 shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500 outline-none transition cursor-pointer">
           <option value="" disabled selected>— Pilih salah satu —</option>
-          <option value="clonebot">🤖 Clonebot</option>
-          <option value="sewabot">📢 Sewabot</option>
-          <option value="lainnya">✨ Lainnya (pesan bebas)</option>
+          <option value="clonebot">🤖 Clonebot (Bot pribadi)</option>
+          <option value="sewabot">📢 Sewabot (Grup)</option>
+          <option value="lainnya">✨ Lainnya / tanya</option>
         </select>
+        <p class="text-xs text-gray-400 mt-1 ml-2">*ubah pilihan untuk menampilkan form yang sesuai</p>
       </div>
 
-      <!-- DYNAMIC FIELDS (semua hidden dulu) -->
-      
-      <!-- CLONEBOT FIELDS -->
-      <div id="clonebotFields" class="field-group space-y-4 hidden">
-        <div class="border-t border-indigo-100 my-4"></div>
-        <h3 class="font-medium text-indigo-800 flex items-center gap-1"><span class="text-lg">🤖</span> Detail Clonebot</h3>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1" for="nomorBot">🆔 Nomor bot bermasalah</label>
-          <input type="text" id="nomorBot" placeholder="contoh: 6281234567890" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/60 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+      <!-- DYNAMIC FIELDS - CLONEBOT (dengan kolom total grup) -->
+      <div id="clonebotFields" class="field-group hidden space-y-5">
+        <div class="border-l-4 border-indigo-400 bg-indigo-50/50 p-3 rounded-xl">
+          <h3 class="font-semibold text-indigo-800 flex items-center gap-2"><span>🤖</span> Detail Clonebot</h3>
         </div>
-
         <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1" for="serverSelect">🌐 Pilih server (1-4)</label>
-          <select id="serverSelect" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/60 focus:ring-2 focus:ring-indigo-200 outline-none">
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="nomorBot">🆔 Nomor bot (dengan kode negara)</label>
+          <input type="text" id="nomorBot" placeholder="Contoh: 6281234567890" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-indigo-300 outline-none">
+          <p class="text-xs text-gray-400 mt-1">Tanpa spasi, hanya angka</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="serverSelect">🌐 Server yang dipakai</label>
+          <select id="serverSelect" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-indigo-300">
             <option value="" disabled selected>— Pilih server —</option>
-            <option value="1">Server 1</option>
-            <option value="2">Server 2</option>
-            <option value="3">Server 3</option>
-            <option value="4">Server 4</option>
+            <option value="1">⚡ Server 1</option>
+            <option value="2">⚡ Server 2</option>
+            <option value="3">⚡ Server 3</option>
+            <option value="4">⚡ Server 4</option>
           </select>
         </div>
-
+        <!-- KOLOM BARU: Total grup di bot -->
         <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1" for="keluhanClone">📝 Keluhan / kendala</label>
-          <textarea id="keluhanClone" rows="3" placeholder="Jelaskan masalahnya sedetail mungkin ..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/60 focus:ring-2 focus:ring-indigo-200 outline-none resize-none"></textarea>
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="totalGrup">👥 Total grup di bot</label>
+          <input type="number" id="totalGrup" placeholder="Contoh: 25" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-indigo-300 outline-none">
+          <p class="text-xs text-gray-400 mt-1">Jumlah grup yang aktif di bot ini (opsional)</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="keluhanClone">📝 Uraian keluhan / kendala</label>
+          <textarea id="keluhanClone" rows="3" placeholder="Jelaskan secara detail: error, bot tidak merespon, fitur rusak, dll..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-indigo-300 resize-none"></textarea>
         </div>
       </div>
 
       <!-- SEWABOT FIELDS -->
-      <div id="sewabotFields" class="field-group space-y-4 hidden">
-        <div class="border-t border-indigo-100 my-4"></div>
-        <h3 class="font-medium text-indigo-800 flex items-center gap-1"><span class="text-lg">📢</span> Detail Sewabot</h3>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1" for="linkGroup">🔗 Link grup / channel</label>
-          <input type="url" id="linkGroup" placeholder="https://chat.whatsapp.com/xxx" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/60 focus:ring-2 focus:ring-indigo-200 outline-none">
+      <div id="sewabotFields" class="field-group hidden space-y-5">
+        <div class="border-l-4 border-emerald-400 bg-emerald-50/50 p-3 rounded-xl">
+          <h3 class="font-semibold text-emerald-800 flex items-center gap-2"><span>📢</span> Detail Sewabot</h3>
         </div>
-
         <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1" for="keluhanSewa">📝 Keluhan / permintaan</label>
-          <textarea id="keluhanSewa" rows="3" placeholder="Ceritakan masalah atau kendala sewabot ..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/60 focus:ring-2 focus:ring-indigo-200 outline-none resize-none"></textarea>
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="linkGroup">🔗 Link grup / channel WhatsApp</label>
+          <input type="url" id="linkGroup" placeholder="https://chat.whatsapp.com/xxxxxxxx" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-emerald-300">
         </div>
-      </div>
-
-      <!-- LAINNYA FIELDS (hanya textarea) -->
-      <div id="lainnyaFields" class="field-group space-y-4 hidden">
-        <div class="border-t border-indigo-100 my-4"></div>
-        <h3 class="font-medium text-indigo-800 flex items-center gap-1"><span class="text-lg">✨</span> Pesan bebas</h3>
-        
         <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1" for="pesanLain">💬 Tulis keluhan / pesan</label>
-          <textarea id="pesanLain" rows="4" placeholder="Silakan sampaikan apapun yang ingin dilaporkan ..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/60 focus:ring-2 focus:ring-indigo-200 outline-none resize-none"></textarea>
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="keluhanSewa">📝 Keluhan / permintaan bantuan</label>
+          <textarea id="keluhanSewa" rows="3" placeholder="Contoh: bot tidak join, delay respon, perpanjangan sewa, dll..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-emerald-300 resize-none"></textarea>
         </div>
       </div>
 
-      <!-- SUBMIT BUTTON -->
-      <button type="button" id="submitBtn" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 text-lg">
+      <!-- LAINNYA FIELDS -->
+      <div id="lainnyaFields" class="field-group hidden space-y-5">
+        <div class="border-l-4 border-amber-400 bg-amber-50/50 p-3 rounded-xl">
+          <h3 class="font-semibold text-amber-800 flex items-center gap-2"><span>✨</span> Pesan bebas</h3>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="pesanLain">💬 Tulis keluhan, saran, atau pertanyaan</label>
+          <textarea id="pesanLain" rows="4" placeholder="Sampaikan apa pun yang ingin dilaporkan secara jelas..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-amber-300 resize-none"></textarea>
+        </div>
+      </div>
+
+      <!-- TOMBOL KIRIM -->
+      <button type="button" id="submitBtn" class="w-full mt-5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold py-4 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 text-lg btn-pulse">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.25 18.75 5.972 5.972 0 0 1 3 14.25 5.972 5.972 0 0 1 5.25 9.75c.088 0 .174.005.26.015a9.742 9.742 0 0 1 1.35-3.066 9.75 9.75 0 0 1 12.54-2.667A9.75 9.75 0 0 1 21 12Z" />
         </svg>
         Kirim laporan
       </button>
     </form>
+
+    <div class="text-center text-xs text-gray-400 mt-6 pt-2 border-t border-gray-200/60">
+      <span>📱 Laporan akan dikirim ke tim support • pastikan nomor WhatsApp aktif</span>
+    </div>
   </div>
 
   <script>
     (function() {
-      // ambil elemen penting
+      // Elemen DOM
       const produkSelect = document.getElementById('produk');
       const clonebotDiv = document.getElementById('clonebotFields');
       const sewabotDiv = document.getElementById('sewabotFields');
       const lainnyaDiv = document.getElementById('lainnyaFields');
+      const submitBtn = document.getElementById('submitBtn');
+      const toastEl = document.getElementById('toastMsg');
 
-      // field input untuk masing2 opsi (untuk validasi & ambil value)
+      // Input fields
       const nomorBot = document.getElementById('nomorBot');
       const serverSelect = document.getElementById('serverSelect');
+      const totalGrup = document.getElementById('totalGrup'); // <-- baru
       const keluhanClone = document.getElementById('keluhanClone');
 
       const linkGroup = document.getElementById('linkGroup');
@@ -130,16 +182,24 @@
 
       const pesanLain = document.getElementById('pesanLain');
 
-      // === FUNGSI MENAMPILKAN GROUP SESUAI PILIHAN PRODUK ===
-      function tampilkanGroupBerdasarkanProduk() {
-        const pilihan = produkSelect.value;
+      // Fungsi showToast (feedback halus)
+      function showToast(message, isError = false) {
+        toastEl.style.transition = 'opacity 0.2s';
+        toastEl.textContent = message;
+        toastEl.style.backgroundColor = isError ? 'rgba(185, 28, 28, 0.9)' : 'rgba(15, 23, 42, 0.92)';
+        toastEl.style.opacity = '1';
+        setTimeout(() => {
+          toastEl.style.opacity = '0';
+        }, 2500);
+      }
 
-        // sembunyikan semua grup
+      // Tampilkan/hilangkan group berdasarkan produk
+      function toggleFieldGroups() {
+        const pilihan = produkSelect.value;
         clonebotDiv.classList.add('hidden');
         sewabotDiv.classList.add('hidden');
         lainnyaDiv.classList.add('hidden');
-
-        // tampilkan sesuai pilihan
+        
         if (pilihan === 'clonebot') {
           clonebotDiv.classList.remove('hidden');
         } else if (pilihan === 'sewabot') {
@@ -147,91 +207,123 @@
         } else if (pilihan === 'lainnya') {
           lainnyaDiv.classList.remove('hidden');
         }
-        // jika pilihan kosong (placeholder) : semua tetap hidden
       }
 
-      // panggil saat halaman dimuat (default semua hidden) dan setiap kali ganti produk
-      produkSelect.addEventListener('change', tampilkanGroupBerdasarkanProduk);
-      tampilkanGroupBerdasarkanProduk(); // inisialisasi
+      produkSelect.addEventListener('change', toggleFieldGroups);
+      toggleFieldGroups(); // inisialisasi awal
 
-      // === HANDLE SUBMIT (KIRIM KE WHATSAPP) ===
-      document.getElementById('submitBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-
+      // Fungsi utama: generate pesan WhatsApp dengan format rapi dan readable
+      function buildWhatsAppMessage() {
         const produk = produkSelect.value;
         if (!produk) {
-          alert('Silakan pilih produk terlebih dahulu.');
-          return;
+          showToast('⚠️ Pilih produk terlebih dahulu!', true);
+          return null;
         }
 
-        let pesan = '.owner \n';   // sesuai permintaan: diawali .owner
-        pesan += 'Produk: ';
-
-        // VARIABEL UNTUK VALIDASI
-        if (produk === 'clonebot') {
-          pesan += 'Clonebot\n';
-          const botVal = nomorBot.value.trim();
-          const serverVal = serverSelect.value;
-          const keluhanVal = keluhanClone.value.trim();
-
-          if (!botVal) {
-            alert('Nomor bot harus diisi.');
-            return;
-          }
-          if (!serverVal) {
-            alert('Pilih server terlebih dahulu.');
-            return;
-          }
-          if (!keluhanVal) {
-            alert('Kolom keluhan harus diisi.');
-            return;
-          }
-
-          pesan += 'Nomor Bot: ' + botVal + '\n';
-          pesan += 'Server: Server ' + serverVal + '\n';
-          pesan += 'Keluhan: ' + keluhanVal;
-
-        } else if (produk === 'sewabot') {
-          pesan += 'Sewabot\n';
-          const linkVal = linkGroup.value.trim();
-          const keluhanVal = keluhanSewa.value.trim();
-
-          if (!linkVal) {
-            alert('Link grup harus diisi.');
-            return;
-          }
-          if (!keluhanVal) {
-            alert('Kolom keluhan harus diisi.');
-            return;
-          }
-
-          pesan += 'Link Group: ' + linkVal + '\n';
-          pesan += 'Keluhan: ' + keluhanVal;
-
-        } else if (produk === 'lainnya') {
-          pesan += 'Lainnya\n';
-          const pesanVal = pesanLain.value.trim();
-
-          if (!pesanVal) {
-            alert('Pesan/keluhan tidak boleh kosong.');
-            return;
-          }
-
-          pesan += 'Pesan: ' + pesanVal;
-        }
-
-        // encode dan kirim ke WA
-        const noTujuan = '6285648640715';  // tanpa '+'
-        const urlWA = `https://wa.me/${noTujuan}?text=${encodeURIComponent(pesan)}`;
+        // Awalan command .owner (sesuai permintaan)
+        let message = `.owner \n`;
         
-        // buka tab baru
-        window.open(urlWA, '_blank');
+        if (produk === 'clonebot') {
+          const bot = nomorBot.value.trim();
+          const server = serverSelect.value;
+          const total = totalGrup.value.trim();
+          const keluhan = keluhanClone.value.trim();
+
+          if (!bot) {
+            showToast('❌ Nomor bot harus diisi', true);
+            return null;
+          }
+          if (!server) {
+            showToast('❌ Pilih server (1-4)', true);
+            return null;
+          }
+          if (!keluhan) {
+            showToast('❌ Kolom keluhan tidak boleh kosong', true);
+            return null;
+          }
+          message += `*🍄LAPORAN KELUHAN PENGGUNA*\n\n`;
+          // Format rapi dengan bold WhatsApp (*teks*)
+          message += `*📦 PRODUK:* Clonebot 🤖\n`;
+          message += `*🆔 Nomor Bot:* ${bot}\n`;
+          message += `*🌐 Server:* Server ${server}\n`;
+          // Jika total grup diisi, tampilkan; jika kosong, lewati atau tulis "tidak diisi"
+          if (total) {
+            message += `*👥 Total Grup:* ${total}\n`;
+          }
+          message += `*📝 KELUHAN:*\n${keluhan}\n`;
+          message += `\n_📌 Mohon segera ditindaklanjuti._`;
+          
+        } 
+        else if (produk === 'sewabot') {
+          const link = linkGroup.value.trim();
+          const keluhan = keluhanSewa.value.trim();
+
+          if (!link) {
+            showToast('❌ Link grup harus diisi', true);
+            return null;
+          }
+          if (!keluhan) {
+            showToast('❌ Kolom keluhan harus diisi', true);
+            return null;
+          }
+
+          message += `*📢 PRODUK:* Sewabot\n`;
+          message += `*🔗 Link Grup:* ${link}\n`;
+          message += `*📝 KELUHAN:*\n${keluhan}\n`;
+          message += `\n_Tolong dibantu untuk sewabot ini._`;
+        } 
+        else if (produk === 'lainnya') {
+          const pesan = pesanLain.value.trim();
+          if (!pesan) {
+            showToast('❌ Pesan / keluhan tidak boleh kosong', true);
+            return null;
+          }
+          message += `*✨ PRODUK:* Lainnya (Umum)\n`;
+          message += `*💬 PESAN / KELUHAN:*\n${pesan}\n`;
+          message += `\n_Terima kasih, mohon infonya._`;
+        } 
+        else {
+          showToast('Pilihan tidak valid', true);
+          return null;
+        }
+
+        return message;
+      }
+
+      // Event submit: buka WhatsApp dengan pesan terformat rapi
+      submitBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const finalMessage = buildWhatsAppMessage();
+        if (!finalMessage) return;
+
+        // Nomor tujuan (tanpa '+')
+        const targetNumber = '6285648640715';
+        const encodedMsg = encodeURIComponent(finalMessage);
+        const waUrl = `https://wa.me/${targetNumber}?text=${encodedMsg}`;
+        
+        // Tampilkan konfirmasi kecil sebelum redirect (opsional, biar user tahu)
+        showToast('📤 Membuka WhatsApp...', false);
+        
+        // sedikit delay agar toast kebaca lalu buka tab baru
+        setTimeout(() => {
+          window.open(waUrl, '_blank');
+        }, 200);
       });
 
-      // sedikit sentuhan: kosongin alert styling (optional) — biar gak reload
+      // Optional: reset field group ketika ganti produk, biar ga nyampah (user friendly)
+      function resetFieldsBasedOnSelection() {
+        const current = produkSelect.value;
+        if (current === 'clonebot') {
+          // tidak direset otomatis biar pengguna bisa edit lanjutan, tapi bisa optional
+        } else if (current === 'sewabot') {
+          // biarkan
+        } else if (current === 'lainnya') {
+          // biarkan
+        }
+      }
+      produkSelect.addEventListener('change', resetFieldsBasedOnSelection);
     })();
   </script>
-
-  <!-- optional: tambahan smooth dan clear form (tidak perlu reset, biar user isi lagi) -->
 </body>
 </html>
